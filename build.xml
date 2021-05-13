@@ -1,0 +1,52 @@
+<project name="sokoban" basedir="." default="run">
+    <property name="src_dir" value="src"/>
+    <property name="pkg_dir" value="it/caculli/gzc/sokoban"/>
+    <property name="lib_dir" value="misc/libs"/>
+    <property name="doc_dir" value="doc"/>
+    <property name="build_dir" value="build"/>
+    <property name="test_dir" value="test"/>
+    <property name="pkg_name" value="it.caculli.gzc.sokoban"/>
+    <property name="main_class" value="Sokoban"/>
+    <property name="jar_file" value="${main_class}.jar"/>
+
+    <path id="project.class.path">
+        <pathelement location=""/>
+        <pathelement path="${build_dir}"/>
+    </path>
+
+    <target name="help">
+        <echo>Sokoban by Giorgio Caculli</echo>
+    </target>
+
+    <target name="clean">
+        <delete dir="${doc_dir}"/>
+        <delete dir="${build_dir}"/>
+        <delete dir="${test_dir}"/>
+        <delete file="${jar_file}"/>
+    </target>
+
+    <target name="doc">
+        <delete dir="${doc_dir}"/>
+        <mkdir dir="${doc_dir}"/>
+    </target>
+
+    <target name="build">
+        <delete dir="${build_dir}"/>
+        <mkdir dir="${build_dir}"/>
+    </target>
+
+    <target name="test">
+        <delete dir="${test_dir}"/>
+        <mkdir dir="${test_dir}"/>
+    </target>
+
+    <target name="jar">
+        <delete file="${jar_file}"/>
+    </target>
+
+    <target name="run">
+        <java classname="${pkg_name}.${main_class}" fork="true">
+            <classpath refid="project.class.path"/>
+        </java>
+    </target>
+</project>
