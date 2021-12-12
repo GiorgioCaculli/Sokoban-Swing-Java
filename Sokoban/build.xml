@@ -1,0 +1,225 @@
+<project name="sokoban" basedir="." default="run">
+    <property name="src_dir" value="src"/>
+    <property name="pkg_dir" value="it/caculli/gzc/sokoban"/>
+    <property name="lib_dir" value="../Libs"/>
+    <property name="doc_dir" value="doc"/>
+    <property name="build_dir" value="build"/>
+    <property name="test_dir" value="test"/>
+    <property name="pkg_name" value="it.caculli.gzc.sokoban"/>
+    <property name="main_class" value="Sokoban"/>
+    <property name="jar_file" value="${main_class}.jar"/>
+
+    <condition property="isMac">
+        <os family="mac"/>
+    </condition>
+
+    <condition property="isWindows">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="isUnix">
+        <os family="unix"/>
+    </condition>
+
+    <path id="project.class.path">
+        <pathelement location="${lib_dir}/gson-2.8.6.jar"/>
+        <pathelement location="${lib_dir}/junit-jupiter-api-5.7.2.jar"/>
+        <pathelement location="${lib_dir}/junit-jupiter-engine-5.7.2.jar"/>
+        <pathelement location="${lib_dir}/junit-jupiter-params-5.7.2-all.jar"/>
+        <pathelement location="${lib_dir}/junit-platform-commons-1.7.2.jar"/>
+        <pathelement location="${lib_dir}/junit-platform-console-1.7.2-all.jar"/>
+        <pathelement location="${lib_dir}/junit-platform-engine-1.7.2.jar"/>
+        <pathelement location="${lib_dir}/junit-platform-launcher-1.7.2.jar"/>
+        <pathelement location="${lib_dir}/junit-vintage-engine-5.7.2.jar"/>
+        <pathelement path="${build_dir}"/>
+    </path>
+
+    <path id="libMac">
+        <path refid="project.class.path"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.base.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.controls.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.fxml.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.graphics.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.media.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.swing.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx.web.jar"/>
+        <pathelement location="${lib_dir}/mac/javafx-sdk-11.0.2/lib/javafx-swt.jar"/>
+    </path>
+
+    <path id="libWindows">
+        <path refid="project.class.path"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.base.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.controls.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.fxml.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.graphics.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.media.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.swing.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx.web.jar"/>
+        <pathelement location="${lib_dir}/windows/javafx-sdk-11.0.2/lib/javafx-swt.jar"/>
+    </path>
+
+    <path id="libLinux">
+        <path refid="project.class.path"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.base.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.controls.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.fxml.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.graphics.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.media.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.swing.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx.web.jar"/>
+        <pathelement location="${lib_dir}/unix/javafx-sdk-11.0.2/lib/javafx-swt.jar"/>
+    </path>
+
+    <target name="help">
+        <echo>Sokoban by Giorgio Caculli</echo>
+    </target>
+
+    <target name="clean">
+        <delete dir="${doc_dir}"/>
+        <delete dir="${build_dir}"/>
+        <delete dir="${test_dir}"/>
+        <delete file="${jar_file}"/>
+    </target>
+
+    <target name="doc">
+        <delete dir="${doc_dir}"/>
+        <mkdir dir="${doc_dir}"/>
+        <javadoc sourcepath="${src_dir}" destdir="${doc_dir}" packagenames="${pkg_name}.*" charset="UTF-8"
+                 author="true" use="true" version="true">
+            <classpath refid="project.class.path"/>
+            <doctitle>${ant.project.name}</doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2021 - Caculli Giorgio. All Rights Reserved</i>]]></bottom>
+        </javadoc>
+    </target>
+
+
+    <target name="buildMac" if="isMac">
+        <javac sourcepath="${src_dir}" srcdir="${src_dir}" destdir="${build_dir}"
+               includeantruntime="false" fork="true" source="1.8" target="1.8">
+            <classpath refid="libMac">
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="buildWindows" if="isWindows">
+        <javac sourcepath="${src_dir}" srcdir="${src_dir}" destdir="${build_dir}"
+               includeantruntime="false" fork="true" source="1.8" target="1.8">
+            <classpath refid="libWindows"/>
+        </javac>
+    </target>
+
+    <target name="buildLinux" if="isUnix">
+        <javac sourcepath="${src_dir}" srcdir="${src_dir}" destdir="${build_dir}"
+               includeantruntime="false" fork="true" source="1.8" target="1.8">
+            <classpath refid="libLinux"/>
+        </javac>
+    </target>
+
+    <target name="build">
+        <delete dir="${build_dir}"/>
+        <mkdir dir="${build_dir}"/>
+        <copy todir="${build_dir}">
+            <fileset dir="${src_dir}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <antcall target="buildMac"/>
+        <antcall target="buildWindows"/>
+        <antcall target="buildLinux"/>
+    </target>
+
+    <target name="test" depends="build">
+        <delete dir="${test_dir}"/>
+        <mkdir dir="${test_dir}"/>
+    </target>
+
+    <target name="jarMac" if="isMac">
+        <delete file="${jar_file}"/>
+        <jar destfile="${jar_file}">
+            <fileset dir="${build_dir}">
+                <exclude name="**/test/"/>
+            </fileset>
+            <restrict>
+                <archives>
+                    <zips>
+                        <fileset dir="${lib_dir}" includes="**/gson*.jar"/>
+                        <fileset dir="${lib_dir}" includes="**/mac/**/*.jar"/>
+                    </zips>
+                </archives>
+            </restrict>
+            <manifest>
+                <attribute name="Main-Class" value="${pkg_name}.${main_class}"/>
+                <attribute name="Codebase" value="https://gzc.caculli.it/project/sokoban/java/"/>
+                <attribute name="Built-By" value="Giorgio Caculli"/>
+                <attribute name="Implementation-Title" value="${ant.project.name}"/>
+                <attribute name="Implementation-Vendor" value="Giorgio Caculli"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Permissions" value="sandbox"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="jarWindows" if="isWindows">
+        <delete file="${jar_file}"/>
+        <jar destfile="${jar_file}">
+            <fileset dir="${build_dir}">
+                <exclude name="**/test/"/>
+            </fileset>
+            <restrict>
+                <archives>
+                    <zips>
+                        <fileset dir="${lib_dir}" includes="**/gson*.jar"/>
+                        <fileset dir="${lib_dir}" includes="**/windows/**/*.jar"/>
+                    </zips>
+                </archives>
+            </restrict>
+            <manifest>
+                <attribute name="Main-Class" value="${pkg_name}.${main_class}"/>
+                <attribute name="Codebase" value="https://gzc.caculli.it/project/sokoban/java/"/>
+                <attribute name="Built-By" value="Giorgio Caculli"/>
+                <attribute name="Implementation-Title" value="${ant.project.name}"/>
+                <attribute name="Implementation-Vendor" value="Giorgio Caculli"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Permissions" value="sandbox"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="jarLinux" if="isUnix">
+        <delete file="${jar_file}"/>
+        <jar destfile="${jar_file}">
+            <fileset dir="${build_dir}">
+                <exclude name="**/test/"/>
+            </fileset>
+            <restrict>
+                <archives>
+                    <zips>
+                        <fileset dir="${lib_dir}" includes="**/gson*.jar"/>
+                        <fileset dir="${lib_dir}" includes="**/unix/**/*.jar"/>
+                    </zips>
+                </archives>
+            </restrict>
+            <manifest>
+                <attribute name="Main-Class" value="${pkg_name}.${main_class}"/>
+                <attribute name="Codebase" value="https://gzc.caculli.it/project/sokoban/java/"/>
+                <attribute name="Built-By" value="Giorgio Caculli"/>
+                <attribute name="Implementation-Title" value="${ant.project.name}"/>
+                <attribute name="Implementation-Vendor" value="Giorgio Caculli"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Permissions" value="sandbox"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="jar" depends="test">
+        <antcall target="jarMac"/>
+        <antcall target="jarWindows"/>
+        <antcall target="jarLinux"/>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar_file}" fork="true">
+            <classpath refid="project.class.path"/>
+        </java>
+    </target>
+</project>
