@@ -1,4 +1,4 @@
-# Sokoban Game written in C++11 and SFML
+# Sokoban Game written in Java 11 and Swing
 
 ## Authors:
 - Giorgio Caculli
